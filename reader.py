@@ -20,6 +20,12 @@ class Record (object):
 
     E_SYSTEMS = [ E_SYSTEM_ALACTIC, E_SYSTEM_LACTIC, E_SYSTEM_AEROBIC]
 
+    L_LOW = "Low"
+    L_MEDIUM = "Medium"
+    L_HIGH = "High"
+
+    LOAD_TYPES = [L_LOW, L_MEDIUM, L_HIGH]
+
     def __init__ (self):
         self._date = None 
         self._title = None
@@ -75,6 +81,56 @@ class Record (object):
     def getEnergySystem (self):    
         return self._esystem
 
+    def setLoad (self, load):    
+        loadList = []
+
+        # More than one system separated by /
+        parts = load.split ("/")
+        for p in parts:
+            found = False
+            for e in Record.LOAD_TYPES:
+                if e.upper () == p.upper ():
+                    found = True
+                    loadList.append (e)
+                    break
+
+            if not found:         
+                e = RecordException ("Invalid energy system " + p )
+                raise e
+        
+        self._load = loadList        
+
+    def getLoad (self):    
+        return self._load
+
+    def setDone (self, done):    
+        if done.upper() == "TRUE" or done.upper () == "YES":
+            self._done = True
+        else:
+            self._done = False
+
+    def getDone (self):    
+        return self._done
+
+    def setTired (self, tired):    
+        tiredNum = int (tired)
+        if tiredNum >= 0 and tiredNum <= 10:
+            self._tired = tiredNum
+        else:
+            raise RecordException ("Invalid tired number " + str(tired))
+    def getTired (self):    
+        return self._tired
+
+    def setMotivation (self, mot):    
+        motNum = int (mot)
+        if motNum >= 0 and motNum <= 10:
+            self._motivation = motNum
+        else:
+            raise RecordException ("Invalid motivation number " + str(mot))
+
+    def getMotivation (self):    
+        return self._motivation
+
 def readFile (fileName):
     xmldoc = minidom.parse (fileName)
     dataObject = xmldoc.getElementsByTagName ('data')
@@ -106,11 +162,29 @@ def readFile (fileName):
         if len (es[0].childNodes) > 0:
             newRecord.setEnergySystem (es[0].childNodes[0].data)
 
+        load = c.getElementsByTagName ("load")
+        if len (load[0].childNodes) > 0:
+            newRecord.setLoad (load[0].childNodes[0].data)
+
+        done = c.getElementsByTagName ("done")
+        if len (done[0].childNodes) > 0:
+            newRecord.setDone (done[0].childNodes[0].data)
+
+        tired = c.getElementsByTagName ("tired")
+        if len (tired[0].childNodes) > 0:
+            newRecord.setTired (tired[0].childNodes[0].data)
+
+        mot = c.getElementsByTagName ("motivation")
+        if len (mot[0].childNodes) > 0:
+            newRecord.setMotivation (mot[0].childNodes[0].data)
+
+
         recordList.append (newRecord)
 
     for c in recordList:
         print c.getTitle ()
-        print c.getEnergySystem ()
+        print c.getMotivation ()
+        print c.getTired ()
 
 
 
