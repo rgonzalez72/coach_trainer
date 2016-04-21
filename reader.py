@@ -131,6 +131,32 @@ class Record (object):
     def getMotivation (self):    
         return self._motivation
 
+    def setSession (self, session):
+        self._session  = session
+
+    def getSession (self):    
+        return self._session
+
+    def setDistance (self, distance):    
+        dist = float (distance)
+        if dist >= 0.0 and dist < 100.0:
+            self._distance = distance
+        else:
+            raise RecordException ("Invalid distance " + str(distance))
+
+    def getDistance (self):    
+        return self._distance
+
+    def setATired (self, tired):    
+        tiredNum = int (tired)
+        if tiredNum >= 0 and tiredNum <= 10:
+            self._atired = tiredNum
+        else:
+            raise RecordException ("Invalid tired number " + str(tired))
+
+    def getATired (self):    
+        return self._atired
+
 def readFile (fileName):
     xmldoc = minidom.parse (fileName)
     dataObject = xmldoc.getElementsByTagName ('data')
@@ -178,13 +204,23 @@ def readFile (fileName):
         if len (mot[0].childNodes) > 0:
             newRecord.setMotivation (mot[0].childNodes[0].data)
 
+        session = c.getElementsByTagName ("session")
+        if len (session[0].childNodes) > 0:
+            newRecord.setSession (session[0].childNodes[0].data)
+
+        dist = c.getElementsByTagName ("distance")
+        if len (dist[0].childNodes) > 0:
+            newRecord.setDistance (dist[0].childNodes[0].data)
+
+        atired = c.getElementsByTagName ("atired")
+        if len (atired[0].childNodes) > 0:
+            newRecord.setATired (atired[0].childNodes[0].data)
 
         recordList.append (newRecord)
 
     for c in recordList:
         print c.getTitle ()
-        print c.getMotivation ()
-        print c.getTired ()
+        print c.getATired ()
 
 
 
