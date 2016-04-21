@@ -95,7 +95,7 @@ class Record (object):
                     break
 
             if not found:         
-                e = RecordException ("Invalid energy system " + p )
+                e = RecordException ("Invalid load " + p )
                 raise e
         
         self._load = loadList        
@@ -157,7 +157,119 @@ class Record (object):
     def getATired (self):    
         return self._atired
 
+    def getLoadStr (self):    
+        loadStr = ""
+        index = 0
+        for l in self._load:
+            if index > 0:
+                loadStr +="/"
+            loadStr += l
+            index += 1
+
+        return loadStr
+
+    def getEmphasisStr (self):    
+        empStr = ""
+        index = 0
+        for l in self._esystem:
+            if index > 0:
+                empStr +="/"
+            empStr += l
+            index += 1
+
+        return empStr
+
+    def printDetailedSession (self, fp):    
+        fp.write ("\n")
+        fp.write ( self._date.strftime ("%A, %d-%B-%Y") + "\n")
+        fp.write ( self._title + "\n")
+        fp.write ("Load: " + self.getLoadStr() + ", emphasis: " + self._emphasis + ", energy system: " + \
+                self.getEmphasisStr () +".\n")
+
+class Week (object):        
+
+    def __init__ (self):
+        self._load = None
+        self._sessions = []
+
+    def setLoad (self, load):    
+        loadList = []
+
+        # More than one system separated by /
+        parts = load.split ("/")
+        for p in parts:
+            found = False
+            for e in Record.LOAD_TYPES:
+                if e.upper () == p.upper ():
+                    found = True
+                    loadList.append (e)
+                    break
+
+            if not found:         
+                e = RecordException ("Invalid load " + p )
+                raise e
+        
+        self._load = loadList        
+
+    def getLoad (self):    
+        return self._load 
+
+    def addSession (self, session):    
+        self._sessions.append (session)
+
+    def getFirstDate (self):    
+        return self._sessions[0].getDate ()
+
+    def getNumberOfSessions (self):    
+        return len (self._sessions)
+
+    def printDetailedWeek (self, fp):    
+        for s in self._sessions:
+            s.printDetailedSession (fp)
+
+class TestPlan (object):        
+
+    def __init__ (self):
+        self._name = None
+        self._weeks = []
+
+    def setName (self, name):    
+        self._name = name
+
+    def getName (self):    
+        return self._name
+
+    def addWeek (self, week):
+        self._weeks.append (week)
+
+    def printSummary (self, outFileName):    
+        with open (outFileName, "w") as fp:
+            fp.write ("Test plan for " + self.getName () + ".\n")
+            fp.write ("The plan consists of " + str(len (self._weeks)) + " weeks.\n\n")
+
+
+            index = 1
+            for w in self._weeks:
+                fp.write ("Week " + str(index) + ", load " + w.getLoad ()[0] + ", date " + \
+                        w.getFirstDate().strftime ("%A, %d-%B-%Y") + ", " + \
+                        str(w.getNumberOfSessions ()) + " sessions.\n")
+
+                index += 1
+
+    def printDetailedPlan (self, outFileName):                
+        with open (outFileName, "w") as fp:
+            fp.write ("Test plan for " + self.getName () + ".\n")
+            fp.write ("The plan consists of " + str(len (self._weeks)) + " weeks.\n\n")
+
+            index = 1
+            for w in self._weeks:
+                fp.write ("\n\nWeek " + str(index) + ", load " + w.getLoad ()[0] + ".\n") 
+                w.printDetailedWeek (fp)
+
+                index += 1           
+
 def readFile (fileName):
+    TP = TestPlan ()
     xmldoc = minidom.parse (fileName)
     dataObject = xmldoc.getElementsByTagName ('data')
     name = dataObject[0].getElementsByTagName ('name')
@@ -165,65 +277,76 @@ def readFile (fileName):
     for c in name[0].childNodes:
         nameStr =  c.data
 
-    recordsList = dataObject[0].getElementsByTagName ('records')
+    TP.setName (nameStr)
+
+    weekList = dataObject[0].getElementsByTagName ('weeks')
+    weeks = weekList [0].getElementsByTagName ('week')
+
+
+    for w in weeks:
+        W = Week () 
+
+        load = w.getElementsByTagName ('wload')
+        W.setLoad (load[0].childNodes[0].data)
+
+        recordsList = w.getElementsByTagName ('records')
     
-    records = recordsList[0].getElementsByTagName ('record')
+        records = recordsList[0].getElementsByTagName ('record')
 
-    recordList = []
+        recordList = []
     
-    for c in records:
-        newRecord = Record ()
+        for c in records:
+            newRecord = Record ()
 
-        date = c.getElementsByTagName ('date')
-        newRecord.setDate ( date[0].childNodes [0].data)
+            date = c.getElementsByTagName ('date')
+            newRecord.setDate ( date[0].childNodes [0].data)
 
-        title = c.getElementsByTagName ('title')
-        newRecord.setTitle (title[0].childNodes[0].data)
+            title = c.getElementsByTagName ('title')
+            newRecord.setTitle (title[0].childNodes[0].data)
 
-        emp = c.getElementsByTagName ('emphasis')
-        if len (emp[0].childNodes) > 0:
-            newRecord.setEmphasis (emp[0].childNodes[0].data)
+            emp = c.getElementsByTagName ('emphasis')
+            if len (emp[0].childNodes) > 0:
+                newRecord.setEmphasis (emp[0].childNodes[0].data)
 
-        es = c.getElementsByTagName ("esystem")
-        if len (es[0].childNodes) > 0:
-            newRecord.setEnergySystem (es[0].childNodes[0].data)
+            es = c.getElementsByTagName ("esystem")
+            if len (es[0].childNodes) > 0:
+                newRecord.setEnergySystem (es[0].childNodes[0].data)
 
-        load = c.getElementsByTagName ("load")
-        if len (load[0].childNodes) > 0:
-            newRecord.setLoad (load[0].childNodes[0].data)
+            load = c.getElementsByTagName ("load")
+            if len (load[0].childNodes) > 0:
+                newRecord.setLoad (load[0].childNodes[0].data)
 
-        done = c.getElementsByTagName ("done")
-        if len (done[0].childNodes) > 0:
-            newRecord.setDone (done[0].childNodes[0].data)
+            done = c.getElementsByTagName ("done")
+            if len (done[0].childNodes) > 0:
+                newRecord.setDone (done[0].childNodes[0].data)
 
-        tired = c.getElementsByTagName ("tired")
-        if len (tired[0].childNodes) > 0:
-            newRecord.setTired (tired[0].childNodes[0].data)
+            tired = c.getElementsByTagName ("tired")
+            if len (tired[0].childNodes) > 0:
+                newRecord.setTired (tired[0].childNodes[0].data)
 
-        mot = c.getElementsByTagName ("motivation")
-        if len (mot[0].childNodes) > 0:
-            newRecord.setMotivation (mot[0].childNodes[0].data)
+            mot = c.getElementsByTagName ("motivation")
+            if len (mot[0].childNodes) > 0:
+                newRecord.setMotivation (mot[0].childNodes[0].data)
+    
+            session = c.getElementsByTagName ("session")
+            if len (session[0].childNodes) > 0:
+                newRecord.setSession (session[0].childNodes[0].data)
 
-        session = c.getElementsByTagName ("session")
-        if len (session[0].childNodes) > 0:
-            newRecord.setSession (session[0].childNodes[0].data)
+            dist = c.getElementsByTagName ("distance")
+            if len (dist[0].childNodes) > 0:
+                newRecord.setDistance (dist[0].childNodes[0].data)
 
-        dist = c.getElementsByTagName ("distance")
-        if len (dist[0].childNodes) > 0:
-            newRecord.setDistance (dist[0].childNodes[0].data)
+            atired = c.getElementsByTagName ("atired")
+            if len (atired[0].childNodes) > 0:
+                newRecord.setATired (atired[0].childNodes[0].data)
 
-        atired = c.getElementsByTagName ("atired")
-        if len (atired[0].childNodes) > 0:
-            newRecord.setATired (atired[0].childNodes[0].data)
+            W.addSession (newRecord)
+        TP.addWeek (W)
 
-        recordList.append (newRecord)
-
-    for c in recordList:
-        print c.getTitle ()
-        print c.getATired ()
-
-
+    return TP
 
 
 if __name__ == "__main__":
-   readFile (sys.argv[1]) 
+    TP = readFile (sys.argv[1]) 
+    TP.printSummary ("summary.txt") 
+    TP.printDetailedPlan ("weeks.txt")
