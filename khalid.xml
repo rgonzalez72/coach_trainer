@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<data>
+<name>Khalid</name>
+<week>
+  <wload>Low</wload>
+  <records>
+    <record>
+      <date>27-April-2016</date>
+      <title>Recovery run 5-7Km.</title>
+      <emphasis>Endurance</emphasis>
+      <esystem>Aerobic</esystem>
+      <load>Low</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+    <record>
+      <date>28-April-2016</date>
+      <title>5km slow + circuit x 1.</title>
+      <emphasis>Strength</emphasis>
+      <esystem>Lactic</esystem>
+      <load>Medium</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+    <record>
+      <date>29-April-2016</date>
+      <title>Long run 16Km.</title>
+      <emphasis>Endurance</emphasis>
+      <esystem>Aerobic</esystem>
+      <load>Medium</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+  </records>
+</week>  
+<week>
+  <wload>Medium</wloads>
+  <records>
+    <record>
+      <date>2-May-2016</date>
+      <title>Fartlek 1' fast, 3' slow. 30 mins</title>
+      <emphasis>Endurance</emphasis>
+      <esystem>Aerobic</esystem>
+      <load>High</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+   </record>
+   <record>
+      <date>4-May-2016</date>
+      <title>5k warm up + circuit x 1.</title>
+      <emphasis>Strength</emphasis>
+      <esystem>Lactic</esystem>
+      <load>Medium</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+    <record>
+      <date>5-May-2016</date>
+      <title>Recovery run 7Km.</title>
+      <emphasis>Endurance</emphasis>
+      <esystem>Aerobic</esystem>
+      <load>Low</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+    <record>
+       <date>7-May-2016</date>
+       <title>Long run 18Km.</title>
+       <emphasis>Endurance</emphasis>
+       <esystem>Aerobic</esystem>
+       <load>Medium</load>
+       <done>False</done>
+       <tired></tired>
+       <motivation></motivation>
+       <session></session>
+       <distance></distance>
+       <atired></atired>
+    </record>
+  </records>
+</week>
+<week>
+  <wload>High</wload>
+  <records>
+    <record>
+      <date>9-May-2016</date>
+      <title>Fartlek 1' Fast, 3' Slow. 40 mins</title>
+      <emphasis>Endurance</emphasis>
+      <esystem>Aerobic</esystem>
+      <load>High</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+    <record>
+      <date>11-May-2016</date>
+      <title>Hills 5x120m acceleration 5 x 120m.</title>
+      <emphasis>Strength/Endurance</emphasis>
+      <esystem>Lactic</esystem>
+      <load>High</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+    <record>
+      <date>12-May-2016</date>
+      <title>5k warm up + circuit x 2.</title>
+      <emphasis>Strenght</emphasis>
+      <esystem>Lactic</esystem>
+      <load>Medium</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+    <record>
+      <date>14-May-2016</date>
+      <title>Very long run 23Km.</title>
+      <emphasis>Endurance</emphasis>
+      <esystem>Aerobic</esystem>
+      <load>High</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+    <record>
+      <date>15-May-2016</date>
+      <title>Recovery run 7Km.</title>
+      <emphasis>Endurance</emphasis>
+      <esystem>Aerobic</esystem>
+      <load>Low</load>
+      <done>False</done>
+      <tired></tired>
+      <motivation></motivation>
+      <session></session>
+      <distance></distance>
+      <atired></atired>
+    </record>
+  </records>  
+</week>  
+</data>
