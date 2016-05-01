@@ -140,7 +140,7 @@ class Record (object):
     def setDistance (self, distance):    
         dist = float (distance)
         if dist >= 0.0 and dist < 100.0:
-            self._distance = distance
+            self._distance = float (distance)
         else:
             raise RecordException ("Invalid distance " + str(distance))
 
@@ -188,6 +188,10 @@ class Record (object):
                 str(self._emphasis) + ", energy system: " + 
                 str(self.getEmphasisStr ()) +".\n")
 
+    @staticmethod 
+    def ktomile (k):
+        return k/1.609
+
 class Week (object):        
 
     def __init__ (self):
@@ -229,6 +233,20 @@ class Week (object):
         for s in self._sessions:
             s.printDetailedSession (fp)
 
+    def getDistance (self):
+        distance = 0.0
+        for s in self._sessions:
+            if s.getDone ():
+                distance += s.getDistance ()
+        return distance
+
+    def getDone (self):
+        done=0
+        for s in self._sessions:
+            if s.getDone ():
+                done += 1
+        return done
+
 class TestPlan (object):        
 
     def __init__ (self):
@@ -255,6 +273,10 @@ class TestPlan (object):
                 fp.write ("Week " + str(index) + ", load " + w.getLoad ()[0] + ", date " + \
                         w.getFirstDate().strftime ("%A, %d-%B-%Y") + ", " + \
                         str(w.getNumberOfSessions ()) + " sessions.\n")
+                if w.getDone () > 0:
+                    distance =w.getDistance ()
+                    fp.write ("\tTotal distance: " + str(distance) + "k/" + 
+                            "%0.2f" % Record.ktomile (distance) + "m\n")
 
                 index += 1
 
