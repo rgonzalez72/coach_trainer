@@ -171,11 +171,12 @@ class Record (object):
     def getEmphasisStr (self):    
         empStr = ""
         index = 0
-        for l in self._esystem:
-            if index > 0:
-                empStr +="/"
-            empStr += l
-            index += 1
+        if self._esystem is not None:
+            for l in self._esystem:
+                if index > 0:
+                    empStr +="/"
+                empStr += l
+                index += 1
 
         return empStr
 
@@ -183,8 +184,9 @@ class Record (object):
         fp.write ("\n")
         fp.write ( self._date.strftime ("%A, %d-%B-%Y") + "\n")
         fp.write ( self._title + "\n")
-        fp.write ("Load: " + self.getLoadStr() + ", emphasis: " + self._emphasis + ", energy system: " + \
-                self.getEmphasisStr () +".\n")
+        fp.write ("Load: " + str(self.getLoadStr()) + ", emphasis: " + 
+                str(self._emphasis) + ", energy system: " + 
+                str(self.getEmphasisStr ()) +".\n")
 
 class Week (object):        
 
