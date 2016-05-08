@@ -168,7 +168,7 @@ class Record (object):
 
         return loadStr
 
-    def getEmphasisStr (self):    
+    def getEnergyStr (self):    
         empStr = ""
         index = 0
         if self._esystem is not None:
@@ -186,7 +186,7 @@ class Record (object):
         fp.write ( self._title + "\n")
         fp.write ("Load: " + str(self.getLoadStr()) + ", emphasis: " + 
                 str(self._emphasis) + ", energy system: " + 
-                str(self.getEmphasisStr ()) +".\n")
+                str(self.getEnergyStr ()) +".\n")
 
     @staticmethod 
     def ktomile (k):
@@ -274,6 +274,26 @@ class Week (object):
             session = self.getDay (day)
             if session is not None:
                 fp.write (session.getTitle ())
+            fp.write ("</td>")
+        fp.write ("</tr>\n")
+        fp.write ('\t\t<tr><th>Other sports</th>')
+        for day in WEEK_DAYS:
+            fp.write ("<td></td>")
+        fp.write ("</tr>\n")
+        fp.write ('\t\t<tr><th>Training emphasis</th>')
+        for day in WEEK_DAYS:
+            session = self.getDay (day)
+            fp.write ("<td>")
+            if session is not None:
+                fp.write (session.getEmphasis ())
+            fp.write ("</td>")
+        fp.write ("</tr>\n")
+        fp.write ('\t\t<tr><th>Energy system</th>')
+        for day in WEEK_DAYS:
+            session = self.getDay (day)
+            fp.write ("<td>")
+            if session is not None:
+                fp.write (session.getEnergyStr ())
             fp.write ("</td>")
         fp.write ("</tr>\n")
         fp.write ('\t\t<tr><th>Load</th>')
