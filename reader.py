@@ -293,6 +293,7 @@ class TestPlan (object):
                 index += 1           
 
     def printHeader (self, fp, title):
+        fp.write ('<!DOCTYPE html>\n')
         fp.write ("<html>\n")
         fp.write ("<head>\n")
         fp.write ("<title>" + title + "</title>\n")
@@ -308,11 +309,11 @@ class TestPlan (object):
         fp.write ("\t<p>The plan consists of " + str(len (self._weeks)) + " weeks.</p>\n")
         index = 1
         for w in self._weeks:
-            fp.write ('\t<p><table border="1">')
-            fp.write ('\t\t<tr><th colspan="8">' + "aaaa" + "</th></tr>\n")
-            fp.write ('\t\t<tr><td>Days<td>Monday</td><Tuesday></td><td>Wednesday</td>' + 
+            fp.write ('\t<p><table border="1">\n')
+            fp.write ('\t\t<tr><th align="left" colspan="8">' + "aaaa" + "</th></tr>\n")
+            fp.write ('\t\t<tr><th>Days</th><td>Monday</td><td>Tuesday</td><td>Wednesday</td>' + 
                     "<td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td></tr>\n")
-            fp.write ("\t</table><p>\n")
+            fp.write ("\t</table>\n")
 
     def printDetailedPlanHTML (self, outFileName):
         with open (outFileName, "w") as fp:
