@@ -292,6 +292,36 @@ class TestPlan (object):
 
                 index += 1           
 
+    def printHeader (self, fp, title):
+        fp.write ("<html>\n")
+        fp.write ("<head>\n")
+        fp.write ("<title>" + title + "</title>\n")
+        fp.write ("</head>\n")
+        fp.write ("<body>\n")
+        fp.write ("\t<h2>"+ title + "</h2>\n")
+
+    def printFooter (self, fp):
+        fp.write ("</body>\n")
+        fp.write ("</html>\n")
+
+    def printBody (self, fp):
+        fp.write ("\t<p>The plan consists of " + str(len (self._weeks)) + " weeks.</p>\n")
+        index = 1
+        for w in self._weeks:
+            fp.write ('\t<p><table border="1">')
+            fp.write ('\t\t<tr><th colspan="8">' + "aaaa" + "</th></tr>\n")
+            fp.write ('\t\t<tr><td>Days<td>Monday</td><Tuesday></td><td>Wednesday</td>' + 
+                    "<td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td></tr>\n")
+            fp.write ("\t</table><p>\n")
+
+    def printDetailedPlanHTML (self, outFileName):
+        with open (outFileName, "w") as fp:
+            title = "Test plan for " + self.getName () 
+            self.printHeader (fp, title)
+            self.printBody (fp)
+            self.printFooter (fp)
+            
+
 def readFile (fileName):
     TP = TestPlan ()
     xmldoc = minidom.parse (fileName)
@@ -374,3 +404,4 @@ if __name__ == "__main__":
     TP = readFile (sys.argv[1]) 
     TP.printSummary ("summary.txt") 
     TP.printDetailedPlan ("weeks.txt")
+    TP.printDetailedPlanHTML ("weeks.html")
