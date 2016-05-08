@@ -251,6 +251,41 @@ class Week (object):
                 done += 1
         return done
 
+    def getDay (self, index):
+        """ index = 0 is Sunday """
+        session = None
+        for s in self._sessions:
+            if s.getDate ().weekday () == index:
+                session = s
+                break
+        return session
+
+    def printDetailHTMLTable (self, fp):
+        WEEK_DAYS = [0,1,2,3,4,5,6]
+        fp.write ('\t<p><table border="1" width="80%">\n')
+        wtitle = "Microcycle plan " + self.getFirstDayOfWeek().strftime ("%d-%B-%Y") + \
+                      " (" + self.getLoad ()[0] + ")"
+        fp.write ('\t\t<tr><th align="left" colspan="8">' + wtitle + "</th></tr>\n")
+        fp.write ('\t\t<tr><th>Days</th><td>Monday</td><td>Tuesday</td><td>Wednesday</td>' + 
+                    "<td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td></tr>\n")
+        fp.write ('\t\t<tr><th>Session detail</th>')
+        for day in WEEK_DAYS:
+            fp.write ("<td>")
+            session = self.getDay (day)
+            if session is not None:
+                fp.write (session.getTitle ())
+            fp.write ("</td>")
+        fp.write ("</tr>\n")
+        fp.write ('\t\t<tr><th>Load</th>')
+        for day in WEEK_DAYS:
+            fp.write ("<td>")
+            session = self.getDay (day)
+            if session is not None:
+                fp.write (session.getLoadStr ())
+            fp.write ("</td>")
+        fp.write ("</tr>\n")
+        fp.write ("\t</table>\n")
+
 class TestPlan (object):        
 
     def __init__ (self):
@@ -313,13 +348,7 @@ class TestPlan (object):
         fp.write ("\t<p>The plan consists of " + str(len (self._weeks)) + " weeks.</p>\n")
         index = 1
         for w in self._weeks:
-            fp.write ('\t<p><table border="1">\n')
-            wtitle = "Microcycle plan " + w.getFirstDayOfWeek().strftime ("%d-%B-%Y") + \
-                      " (" + w.getLoad ()[0] + ")"
-            fp.write ('\t\t<tr><th align="left" colspan="8">' + wtitle + "</th></tr>\n")
-            fp.write ('\t\t<tr><th>Days</th><td>Monday</td><td>Tuesday</td><td>Wednesday</td>' + 
-                    "<td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td></tr>\n")
-            fp.write ("\t</table>\n")
+            w.printDetailHTMLTable (fp)
 
     def printDetailedPlanHTML (self, outFileName):
         with open (outFileName, "w") as fp:
