@@ -226,6 +226,10 @@ class Week (object):
     def getFirstDate (self):    
         return self._sessions[0].getDate ()
 
+    def getFirstDayOfWeek (self):
+        aux_date = self._sessions[0].getDate ()
+        return aux_date - datetime.timedelta (days=aux_date.weekday ())
+
     def getNumberOfSessions (self):    
         return len (self._sessions)
 
@@ -310,7 +314,9 @@ class TestPlan (object):
         index = 1
         for w in self._weeks:
             fp.write ('\t<p><table border="1">\n')
-            fp.write ('\t\t<tr><th align="left" colspan="8">' + "aaaa" + "</th></tr>\n")
+            wtitle = "Microcycle plan " + w.getFirstDayOfWeek().strftime ("%d-%B-%Y") + \
+                      " (" + w.getLoad ()[0] + ")"
+            fp.write ('\t\t<tr><th align="left" colspan="8">' + wtitle + "</th></tr>\n")
             fp.write ('\t\t<tr><th>Days</th><td>Monday</td><td>Tuesday</td><td>Wednesday</td>' + 
                     "<td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td></tr>\n")
             fp.write ("\t</table>\n")
